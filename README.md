@@ -16,6 +16,9 @@ Comparation between 'em
 
 3. Fault tolerant
 
+4. Tip n trick:
+* Partition transform is more efficient.
+
 Chapter III: Best practice on:
 1. Broadcast
 2. Tuning application
