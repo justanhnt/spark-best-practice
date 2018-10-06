@@ -1,5 +1,8 @@
 # Apache Spark best practice
-My experience for one year of using spark
+1+ year of using spark
+
+Why Spark for Big Data Computing?
+It's ez to use, convenient, large community. v.v. support Stateful Streaming, Batch Processing, Machine Learning enablement.
 
 ### Chapter I: From ground up
 1. Setting up environment
@@ -43,10 +46,24 @@ First application for Word Count, suppose you have data.txt in your classpath, t
 
         sc.close();
 ```
-* Distinguish between map, mapPartition, other transformation
-* What cause shuffle, actual computation.
+3. Transformation and Action in spark
+There are 2 concepts in Apache Spark: transformation and action
+* [Transformation] (https://spark.apache.org/docs/latest/rdd-programming-guide.html#transformations)
+Actually, RDD is Scala-driven collection, and transformation function of RDD is really similar to Scala collection.
+Listing some basic transformation you can use:
 
-3. Spark Batch vs Spark Streaming
+| Transformation      | Meaning                                                                                                                                                  |
+|---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| map(func)           | Return a new distributed dataset formed by passing each element of the source through a function func.                                                   |
+| filter(func)        | Return a new dataset formed by selecting those elements of the source on which funcreturns true.                                                         |
+| flatMap(func)       | Similar to map, but each input item can be mapped to 0 or more output items (so funcshould return a Seq rather than a single item).                      |
+| mapPartitions(func) | Similar to map, but runs separately on each partition (block) of the RDD, so func must be of type Iterator => Iterator when running on an RDD of type T. |
+
+* [Action] (https://spark.apache.org/docs/latest/rdd-programming-guide.html#actions)
+
+What cause shuffle, actual computation.
+
+4. Spark Batch vs Spark Streaming
 
 | Criteria | Batch | Streaming |
 |----------|-------|-----------|
@@ -54,8 +71,10 @@ First application for Word Count, suppose you have data.txt in your classpath, t
 |Optimization|Batch does not need to worry too much in optimization, because it might be done|Really serious about optimization (computation time, how many resource is OK ...)|
 
 * From Batching to Streaming
+
 When you are familiar with your batching coding in Spark, move on, try streaming:
 Try first problem: most popular hashtag in newfeeds in past 30 minutes.
+
 * Data preparation
 * Spark streaming processing
 * Visualize your answer in spark master nodes.
