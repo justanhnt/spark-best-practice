@@ -73,12 +73,39 @@ What cause shuffle, actual computation.
 * From Batching to Streaming
 
 When you are familiar with your batching coding in Spark, move on, try streaming:
-Try first problem: most popular hashtag in newfeeds in past 30 minutes.
+- Try first problem: most popular hashtag in newfeeds in past 30 minutes.
+Try not using Window and using your own updateStateByKey, so you can manage what you do in State, and not :D
+
+```java
+        final JavaStreamingContext streamingContext = new JavaStreamingContext(sparkConf, Durations.seconds(5));
+        streamingContext.checkpoint("checkpoint_dir/");
+
+        // so 2 minutes -> 2 * 60 / 5 = 24 mini-batch
+        JavaReceiverInputDStream<String> lines = streamingContext.socketTextStream("localhost", 9999);
+        
+        //...
+        
+        public class Counter {
+                // check if batchPass over 24 -> remove
+                private int batchPass;
+                // counter in batch
+                private long count; 
+        }
+        
+        // when DStream#updateStateByKey -> do something ...
+```
 
 * Data preparation
+
+
 * Spark streaming processing
+
 * Visualize your answer in spark master nodes.
 
+If you running at localhost -> go to this url: 
+```
+19/01/06 20:02:41 INFO SparkUI: Bound SparkUI to 0.0.0.0, and started at http://127.0.0.1:4040
+```
 
 * Convert Streaming into Batching
 When you do not real-time processing of your data, in that case, you might consider converting streaming into batching by dumping your data real-time into HDFS file in your favourite codec (AVRO, ProtoBuf, JSON, v.v.), and further use your batching technique to get thing done.
