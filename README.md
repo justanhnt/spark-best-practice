@@ -122,15 +122,10 @@ What cause shuffle, actual computation.
 
 4. Spark Batch vs Spark Streaming
 
-  
-
-| Criteria | Batch | Streaming |
-
-|----------|-------|-----------|
-
-|Resouces|Batch claims resource for limited times|Streaming take resource forever|
-
-|Optimization|Batch does not need to worry too much in optimization, because it might be done|Really serious about optimization (computation time, how many resource is OK ...)|
+| Criteria     | Batch                                                                           | Streaming                                                                         |
+|--------------|---------------------------------------------------------------------------------|-----------------------------------------------------------------------------------|
+| Resouces     | Batch claims resource for limited time                                          | Streaming take resource forever                                                   |
+| Optimization | Batch does not need to worry too much in optimization, because it might be done | Really serious about optimization (computation time, how many resource is OK ...) |
 
   
 
