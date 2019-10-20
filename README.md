@@ -103,18 +103,11 @@ Actually, RDD is Scala-driven collection, and transformation function of RDD is 
 
 Listing some basic transformation you can use:
 
-  
-
-| Transformation | Meaning |
-
+| Transformation      | Meaning                                                                                                                                                  |
 |---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-
-| map(func) | Return a new distributed dataset formed by passing each element of the source through a function func. |
-
-| filter(func) | Return a new dataset formed by selecting those elements of the source on which funcreturns true. |
-
-| flatMap(func) | Similar to map, but each input item can be mapped to 0 or more output items (so funcshould return a Seq rather than a single item). |
-
+| map(func)           | Return a new distributed dataset formed by passing each element of the source through a function func.                                                   |
+| filter(func)        | Return a new dataset formed by selecting those elements of the source on which funcreturns true.                                                         |
+| flatMap(func)       | Similar to map, but each input item can be mapped to 0 or more output items (so funcshould return a Seq rather than a single item).                      |
 | mapPartitions(func) | Similar to map, but runs separately on each partition (block) of the RDD, so func must be of type Iterator => Iterator when running on an RDD of type T. |
 
   
