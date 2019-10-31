@@ -227,19 +227,36 @@ We can have a task similar to checkpoint, do the checkpoint for stateful and use
 4. Tip and trick:
 
 * Partition transform is more efficient.
+In Spark, beside element-wise transformation like map, flatMap, foreach ..., we also have partition transformation like mapPartition, foreachPartition. In partition transformation, the function takes all elements of a partition as input, and output multiple elements. With partition transformation, we can have some advantages as follows:
+   * It reduce number of function call, we use 1 function to process multiple elements
+   * For some object that take a lot of resouce (Database connection for example), create one object in a partition transformation and reuse it for all elements of a partion is a good performance boost instead of creating one per element.
 
   
 
 ### Chapter III: Best practice on:
 
 1. Broadcast
+
 Broadcast the metadata, and shouldn't be changing.
 
+Broadcast should be use when we want to share one read-only object to all executor. Broadcast is distributed to all executor in an efficient manner. If we use normal variable instead of broadcast, the value will need to be serialize and transfer to all executor in all the function call. When using broadcast, the broadcast value will be transfer to each executor only once, therefore much more efficient, especially in situation that the object is a big object. 
+
 2. Tuning application
+
 Tuning Application is depending on task you working on, if you run a batch job, there's some point you do not need to tune more to run faster, cos it can be time-consuming, and not too much effective.
 
+Some general tips when tuning Spark application:
+
+* Notice special value in fields that are use as key. Spark distribute task by key, special value in key field (for exampl NULL) can make data skew and will affect running time very badly.
+
+* Carefully choose the number of partition. Choosing number of partition is a trade-off. High number of partition result in smaller partition but high number of task. Low number of partion will have less tasks with bigger partition, but will be more prone to out of memory or slow task because of lack of memory. Normally, partition size shouldn't be bigger than 128MB.
+
+* Need to understand the job is CPU/memory/network intensive to choose number of executor, cores and memory appropriately. CPU intensive jobs benefit from high number of cores while memory intensive jobs doesn't. High number of core will create higher number of concurrent task in each executor. With jobs that are use a lot of memory, this can make the amount of memory for each task smaller, therefore can lead to out of memory error.
+
 3. Debugging
+
 Debugging: when debugging should look at the graph in management UI, look at DAG, look at the time running each task.
 You should register extra accumulator (actually we always create 1 class, contain all the accumulator, and then register 1 time) for debugging: to see the relation between metrics you use, to make sure that process is producing right value.
+
 4. Testing
 Testing is headache for BigData, cos creating environment like production for development is hard, cos data is changing overtime.
